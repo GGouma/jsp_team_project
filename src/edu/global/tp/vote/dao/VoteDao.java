@@ -13,8 +13,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
-import edu.global.tp.vote.dto.Member;
-import edu.global.tp.vote.dto.Vote;
+import edu.global.tp.vote.dto.MemberDto;
+import edu.global.tp.vote.dto.VoteDto;
 
 public class VoteDao {
 	private DataSource datasource = null;
@@ -30,9 +30,9 @@ public class VoteDao {
 
 	}
 
-	public List<Vote> list() {
+	public List<VoteDto> list() {
 
-		ArrayList<Vote> dtos = new ArrayList<Vote>();
+		ArrayList<VoteDto> dtos = new ArrayList<VoteDto>();
 
 		Connection con = null;
 		PreparedStatement stmt = null;
@@ -47,14 +47,15 @@ public class VoteDao {
 			// 반복문을 사용해서 ArrayList에 가져온 데이터를 집어넣는다.
 			while (rs.next()) {
 
-				String v_ssnum = rs.getString("v_ssnum");
 				String v_name = rs.getString("v_name");
+				String v_ssnum = rs.getString("v_ssnum");
+				String v_age = rs.getString("v_age");
+				String v_gender = rs.getString("v_gender");
 				String m_no = rs.getString("m_no");
 				String v_time = rs.getString("v_time");
-				String v_area = rs.getString("v_area");
 				String v_confirm = rs.getString("v_confirm");
 
-				Vote dto = new Vote(v_ssnum, v_name, m_no, v_time, v_area, v_confirm);
+				VoteDto dto = new VoteDto(v_name, v_ssnum, v_age, v_gender, m_no, v_time, v_confirm);
 
 				dtos.add(dto);
 			}
@@ -86,45 +87,46 @@ public class VoteDao {
 	}
 
 	public String selectMember(HttpServletRequest request, HttpServletResponse response) {
-		ArrayList<Member> list = new ArrayList<Member>();
+		ArrayList<MemberDto> list = new ArrayList<MemberDto>();
+		
+		Connection con = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
 		
 		try {
-			conn = getConnection();
-			
 			//후보 조회 화면 쿼리
-			String sql = "SELECT ";
-			       sql+= " M.m_no, ";
-			       sql+= " M.m_name, ";
-			       sql+= " P.p_name, ";
-			       sql+= " DECODE(M.p_school,'1','고졸','2','학사','3','석사','박사') p_school, ";
-			       sql+= " substr(M.m_jumin,1,6)|| ";
-			       sql+= " '-'||substr(M.m_jumin,7) m_jumin, ";
-			       sql+= " M.m_city, ";
-			       sql+= " substr(P.p_tel1,1,2)||'-'||P.p_tel2||'-'||";
-			       sql+= " (substr(P.p_tel3,4)||";
-			       sql+= "  substr(P.p_tel3,4)||";
-			       sql+= "  substr(P.p_tel3,4)||";
-			       sql+= "  substr(P.p_tel3,4)) p_tel ";
-			       sql+= " FROM tbl_member_202005 M, tbl_party_202005 P ";
-			       sql+= " WHERE M.p_code = P.p_code";
-				 ps = conn.prepareStatement(sql);
-				 rs = ps.executeQuery();
-				 
+			String query = "SELECT ";
+			query+= " M.m_no, ";
+			query+= " M.m_name, ";
+			query+= " P.p_name, ";
+			query+= " DECODE(M.p_school,'1','고졸','2','학사','3','석사','박사') p_school, ";
+			query+= " substr(M.m_ssnum,1,6)|| ";
+			query+= " '-'||substr(M.m_ssnum,7) m_ssnum, ";
+			query+= " M.m_city, ";
+			query+= " substr(P.p_tel1,1,2)||'-'||P.p_tel2||'-'||";
+			query+= " (substr(P.p_tel3,4)||";
+			query+= "  substr(P.p_tel3,4)||";
+			query+= "  substr(P.p_tel3,4)||";
+			query+= "  substr(P.p_tel3,4)) p_tel ";
+			query+= " FROM tbl_member_2023 M, tbl_party_2023 P ";
+			query+= " WHERE M.p_code = P.p_code";
+			
+				
 			while(rs.next()) {
-				Member member = new Member();
+				MemberDto member = new MemberDto();
 				member.setM_no(rs.getString(1));
 				member.setM_name(rs.getString(2));
 				member.setP_name(rs.getString(3));
 				member.setP_school(rs.getString(4));
-				member.setM_jumin(rs.getString(5));
+				member.setM_ssnum(rs.getString(5));
 				member.setM_city(rs.getString(6));
 				member.setP_tel(rs.getString(7));
 					 
 				list.add(member);
 			}
 			request.setAttribute("list",list);
-				conn.close();
-				ps.close();
+				con.close();
+				stmt.close();
 				rs.close();
 			} catch (Exception e) {
 				// TODO Auto-generated catch block

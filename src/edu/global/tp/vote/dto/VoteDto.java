@@ -6,7 +6,7 @@ package edu.global.tp.vote.dto;
 //V_AREA       CHAR(20)     
 //V_CONFIRM    CHAR(1) 
 
-public class Vote {
+public class VoteDto {
 
 	private String v_name;
 	private String v_ssnum;
@@ -16,9 +16,9 @@ public class Vote {
 	private String v_time;
 	private String v_confirm;
 	
-	public Vote () {}
+	public VoteDto () {}
 
-	public Vote(String v_name, String v_ssnum, String v_age, String v_gender, String m_no, String v_time,
+	public VoteDto(String v_name, String v_ssnum, String v_age, String v_gender, String m_no, String v_time,
 			String v_confirm) {
 		super();
 		this.v_name = v_name;

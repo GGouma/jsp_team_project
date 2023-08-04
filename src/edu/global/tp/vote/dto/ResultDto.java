@@ -1,15 +1,15 @@
 package edu.global.tp.vote.dto;
 
 
-public class Result {
+public class ResultDto {
 
 	private String m_no;
 	private String m_name;
 	private String v_total;
 
-	public Result() {}
+	public ResultDto() {}
 	
-	public Result(String m_no, String m_name, String v_total) {
+	public ResultDto(String m_no, String m_name, String v_total) {
 		super();
 		this.m_no = m_no;
 		this.m_name = m_name;

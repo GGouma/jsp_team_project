@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import edu.global.tp.vote.dao.VoteDao;
 
-
+@WebServlet("*.do")
 public class VoteController extends HttpServlet {
    
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

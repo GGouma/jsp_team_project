@@ -2,26 +2,26 @@ package edu.global.tp.vote.dto;
 
 
 
-public class Member {
+public class MemberDto {
 
 	private String m_no;
 	private String m_name;
 	private String p_name;
 	private String p_school;
-	private String m_jumin;
+	private String m_ssnum;
 	private String m_city;
 	private String p_tel;
 
-	public Member () {}
+	public MemberDto () {}
 
-	public Member(String m_no, String m_name, String p_name, String p_school, String m_jumin, String m_city,
+	public MemberDto(String m_no, String m_name, String p_name, String p_school, String m_ssnum, String m_city,
 			String p_tel) {
 		super();
 		this.m_no = m_no;
 		this.m_name = m_name;
 		this.p_name = p_name;
 		this.p_school = p_school;
-		this.m_jumin = m_jumin;
+		this.m_ssnum = m_ssnum;
 		this.m_city = m_city;
 		this.p_tel = p_tel;
 	}
@@ -58,12 +58,12 @@ public class Member {
 		this.p_school = p_school;
 	}
 
-	public String getM_jumin() {
-		return m_jumin;
+	public String getM_ssnum() {
+		return m_ssnum;
 	}
 
-	public void setM_jumin(String m_jumin) {
-		this.m_jumin = m_jumin;
+	public void setM_ssnum(String m_ssnum) {
+		this.m_ssnum = m_ssnum;
 	}
 
 	public String getM_city() {
