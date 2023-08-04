@@ -1,17 +1,30 @@
-package edu.global.tp.dto;
+package edu.global.tp.vote.dto;
 
-import java.sql.Timestamp;
 
 
 public class Member {
 
-	String m_no;
-	String m_name;
-	String p_name;
-	String p_school;
-	String m_jumin;
-	String m_city;
-	String p_tel;
+	private String m_no;
+	private String m_name;
+	private String p_name;
+	private String p_school;
+	private String m_jumin;
+	private String m_city;
+	private String p_tel;
+
+	public Member () {}
+
+	public Member(String m_no, String m_name, String p_name, String p_school, String m_jumin, String m_city,
+			String p_tel) {
+		super();
+		this.m_no = m_no;
+		this.m_name = m_name;
+		this.p_name = p_name;
+		this.p_school = p_school;
+		this.m_jumin = m_jumin;
+		this.m_city = m_city;
+		this.p_tel = p_tel;
+	}
 
 	public String getM_no() {
 		return m_no;
@@ -68,4 +81,6 @@ public class Member {
 	public void setP_tel(String p_tel) {
 		this.p_tel = p_tel;
 	}
+	
+	
 }

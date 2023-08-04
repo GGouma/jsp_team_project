@@ -1,13 +1,20 @@
-package edu.global.tp.dto;
-
-import java.sql.Timestamp;
+package edu.global.tp.vote.dto;
 
 
 public class Result {
 
-	String m_no;
-	String m_name;
-	String v_total;
+	private String m_no;
+	private String m_name;
+	private String v_total;
+
+	public Result() {}
+	
+	public Result(String m_no, String m_name, String v_total) {
+		super();
+		this.m_no = m_no;
+		this.m_name = m_name;
+		this.v_total = v_total;
+	}
 
 	public String getM_no() {
 		return m_no;
@@ -32,4 +39,6 @@ public class Result {
 	public void setV_total(String v_total) {
 		this.v_total = v_total;
 	}
+	
+	
 }
