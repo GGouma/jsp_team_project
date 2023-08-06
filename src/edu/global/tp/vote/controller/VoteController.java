@@ -1,7 +1,5 @@
 package edu.global.tp.vote.controller;
 
-
-
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -12,57 +10,82 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import edu.global.tp.vote.command.VoteCommand;
+import edu.global.tp.vote.command.VoteListCommand;
+import edu.global.tp.vote.command.VoteMainCommand;
+import edu.global.tp.vote.command.VoteMemberCommand;
+import edu.global.tp.vote.command.VoteMemberListCommand;
+import edu.global.tp.vote.command.VoteResultCommand;
 import edu.global.tp.vote.dao.VoteDao;
 
 @WebServlet("*.do")
 public class VoteController extends HttpServlet {
-   
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		request.setCharacterEncoding("UTF-8");
-		requestPro(request, response);
+
+	private static final long serialVersionUID = 1L;
+
+	public VoteController() {
+		super();
+
 	}
 
-	
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.setCharacterEncoding("UTF-8");
-		requestPro(request, response);
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
+		System.out.println("doGet() ..");
+		actionDo(request, response);
 	}
-	
-	protected void requestPro(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		/* URL check */
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
+		System.out.println("doPost() ..");
+		actionDo(request, response);
+	}
+
+	private void actionDo(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
+		System.out.println("actionDo() ..");
+
+		request.setCharacterEncoding("UTF-8");
+
+		String viewPage = null;
+		VoteCommand command = null;
+
 		String uri = request.getRequestURI();
-		String context = request.getContextPath();
-		String command = uri.substring(context.length());
-		String site = null;
-		
-		System.out.println("command : "+command);
+		String conPath = request.getContextPath();
+		String com = uri.substring(conPath.length());
 		
 		VoteDao vote = new VoteDao();
-		
-		switch(command) {
-		case "/main.do" : 
-			
-			site = "index.jsp";
-			break;
-		case "/memberList.do" : 
-			site = vote.selectMember(request, response);
+		String context = request.getContextPath();
 
-			site = "memberList.jsp";
-			break;
-		case "/voteMember.do" : 
-			
-			site = "voteMember.jsp";
-			break;
-		case "/voteList.do" : 
-			
-			site = "voteList.jsp";
-			break;
-		case "/voteResult.do" : 
-			
-			site = "voteResult.jsp";
-			break;
-		case "/vote.do" : 
+
+		if (com.equals("/main.do")) {
+			command = new VoteMainCommand();
+			command.execute(request, response);
+
+			viewPage = "index.jsp";
+		} else if (com.equals("/memberList.do")) {
+			command = new VoteMemberListCommand();
+			command.execute(request, response);
+
+			viewPage = "memberList.jsp";
+		} else if (com.equals("/voteMember.do")) {
+			command = new VoteMemberCommand();
+			command.execute(request, response);
+
+			viewPage = "voteMember.jsp";
+		} else if (com.equals("/voteList.do")) {
+			command = new VoteListCommand();
+			command.execute(request, response);
+
+			viewPage = "voteList.jsp";
+		} else if (com.equals("/voteResult.do")) {
+			command = new VoteResultCommand();
+			command.execute(request, response);
+
+			viewPage = "voteResult.jsp";
+		} else if (com.equals("/vote.do")) {
 			int result = vote.insertVote(request, response);
 			response.setContentType("text/html; charset=UTF-8");
 			PrintWriter out=response.getWriter();
@@ -77,14 +100,12 @@ public class VoteController extends HttpServlet {
 				out.println("</script>");
 				out.flush();
 			}		
-			break;			
 			
-		default : break;
 		}
-		/* 결과 */
-		RequestDispatcher dispatcher = request.getRequestDispatcher(site);
+
+		RequestDispatcher dispatcher = request.getRequestDispatcher(viewPage);
 		dispatcher.forward(request, response);
+
 	}
-	
-	
+
 }
